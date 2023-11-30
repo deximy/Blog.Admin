@@ -88,7 +88,34 @@ export function filterAsyncRouter(asyncRouterMap) {
                     route.component = _import(route.path.replace('/:id',''))
                 } catch (e) {
                     try {
-                        route.component = () => import(`../views${route.path.replace('/:id','')}.vue`);
+                        const ImportComponent = async (route_path) => {
+                            const split_path = route_path.split('/');
+                            if (split_path.length === 1) {
+                                return (await import(`./${split_path[0]}`)).default;
+                            }
+                            if (split_path.length === 2) {
+                                return (await import(`./${split_path[0]}/${split_path[1]}`)).default;
+                            }
+                            if (split_path.length === 3) {
+                                return (await import(`./${split_path[0]}/${split_path[1]}/${split_path[2]}`)).default;
+                            }
+                            if (split_path.length === 4) {
+                                return (await import(`./${split_path[0]}/${split_path[1]}/${split_path[2]}/${split_path[3]}`)).default;
+                            }
+                            if (split_path.length === 5) {
+                                return (await import(`./${split_path[0]}/${split_path[1]}/${split_path[2]}/${split_path[3]}/${split_path[4]}`)).default;
+                            }
+                            if (split_path.length === 6) {
+                                return (await import(`./${split_path[0]}/${split_path[1]}/${split_path[2]}/${split_path[3]}/${split_path[4]}/${split_path[5]}`)).default;
+                            }
+                        };
+                        ImportComponent(
+                            `../views${route.path.replace('/:id','')}.vue`
+                        ).then(
+                            result => {
+                                route.component = result;
+                            }
+                        );
                     } catch (error) {
                         console.info('%c 当前路由 ' + route.path.replace('/:id','') + '.vue 不存在，因此如法导入组件，请检查接口数据和组件是否匹配，并重新登录，清空缓存!', "color:red")
                     }
