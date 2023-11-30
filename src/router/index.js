@@ -14,7 +14,7 @@ Vue.use(Router)
 
 const createRouter = () => new Router({
     mode: 'history',
-    base: process.env.BASE_URL,
+    base: import.meta.env.BASE_URL,
     routes: [
         {
             path: '/404', component: NoPage, name: 'NoPage',
