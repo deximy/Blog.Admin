@@ -6,7 +6,7 @@ import APIDoc from '../views/APIDoc'
 import NoPage from '../views/404'
 
 import Layout from "../views/Layout/Layout";
-const _import = require('@/router/_import_' + process.env.NODE_ENV)//获取组件的方法
+const _import = import(`../router/_import_${process.env.NODE_ENV}.js`)//获取组件的方法
 
 import LoginCallbackView from "../views/LoginCallbackView";
 
@@ -88,7 +88,7 @@ export function filterAsyncRouter(asyncRouterMap) {
                     route.component = _import(route.path.replace('/:id',''))
                 } catch (e) {
                     try {
-                        route.component = () => import('@/views' + route.path.replace('/:id','') + '.vue');
+                        route.component = () => import(`../views${route.path.replace('/:id','')}.vue`);
                     } catch (error) {
                         console.info('%c 当前路由 ' + route.path.replace('/:id','') + '.vue 不存在，因此如法导入组件，请检查接口数据和组件是否匹配，并重新登录，清空缓存!', "color:red")
                     }
